@@ -1,20 +1,16 @@
-import {Component, inject, input, output} from '@angular/core';
-import {RouterLink} from "@angular/router";
-import {Course} from "../models/course.model";
-import {MatDialog} from "@angular/material/dialog";
-import {openEditCourseDialog} from "../edit-course-dialog/edit-course-dialog.component";
-import {firstValueFrom} from "rxjs";
+import { Component, inject, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
+import { Course } from '../models/course.model';
 
 @Component({
-    selector: 'courses-card-list',
-    imports: [
-        RouterLink
-    ],
-    templateUrl: './courses-card-list.component.html',
-    styleUrl: './courses-card-list.component.scss'
+  selector: 'courses-card-list',
+  imports: [RouterLink],
+  templateUrl: './courses-card-list.component.html',
+  styleUrl: './courses-card-list.component.scss',
 })
 export class CoursesCardListComponent {
-
   courses = input.required<Course[]>();
 
   courseUpdated = output<Course>();
@@ -24,14 +20,11 @@ export class CoursesCardListComponent {
   dialog = inject(MatDialog);
 
   async onEditCourse(course: Course) {
-    const newCourse = await openEditCourseDialog(
-      this.dialog,
-      {
-        mode: "update",
-        title: "Update Existing Course",
-        course
-      }
-    )
+    const newCourse = await openEditCourseDialog(this.dialog, {
+      mode: 'update',
+      title: 'Update Existing Course',
+      course,
+    });
     if (!newCourse) {
       return;
     }
@@ -42,5 +35,4 @@ export class CoursesCardListComponent {
   onCourseDeleted(course: Course) {
     this.courseDeleted.emit(course.id);
   }
-
 }

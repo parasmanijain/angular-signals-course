@@ -1,17 +1,16 @@
-import {computed, effect, inject, Injectable, signal} from "@angular/core";
-import {User} from "../models/user.model";
-import {environment} from "../../environments/environment";
-import {Router} from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { User } from '../models/user.model';
+import { environment } from '../../environments/environment.development';
 
 const USER_STORAGE_KEY = 'user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   #userSignal = signal<User | null>(null);
 
   user = this.#userSignal.asReadonly();
@@ -27,8 +26,7 @@ export class AuthService {
     effect(() => {
       const user = this.user();
       if (user) {
-        localStorage.setItem(USER_STORAGE_KEY,
-          JSON.stringify(user));
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
       }
     });
   }
@@ -41,10 +39,11 @@ export class AuthService {
     }
   }
 
-  async login(email:string, password:string): Promise<User> {
+  async login(email: string, password: string): Promise<User> {
     const login$ = this.http.post<User>(`${environment.apiRoot}/login`, {
       email,
-      password});
+      password,
+    });
     const user = await firstValueFrom(login$);
     this.#userSignal.set(user);
     return user;
@@ -55,5 +54,4 @@ export class AuthService {
     this.#userSignal.set(null);
     await this.router.navigateByUrl('/login');
   }
-
 }
