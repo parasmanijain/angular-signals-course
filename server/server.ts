@@ -7,12 +7,11 @@ import { loginUser } from './login.route';
 import { createCourse } from './create-course.route';
 import { deleteCourse } from './delete-course.route';
 import { saveLesson } from './save-lesson.route';
-import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
 const app: Application = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(cors({ origin: true }));
 
