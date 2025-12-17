@@ -11,14 +11,14 @@
   </div>
   <div class="table-container">
     <table class="results-table">
-      @for(lesson of lessons(); track lesson.id) {
-      <tr>
-        <td>
-          {{ lesson.description }}
-        </td>
-      </tr>
+      @for (lesson of lessons(); track lesson.id) {
+        <tr>
+          <td>
+            {{ lesson.description }}
+          </td>
+        </tr>
       } @empty {
-      <div class="no-lessons">No lessons found.</div>
+        <div class="no-lessons">No lessons found.</div>
       }
     </table>
   </div>
