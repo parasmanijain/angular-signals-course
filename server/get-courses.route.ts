@@ -21,7 +21,7 @@ export function getCourseById(req: Request, res: Response) {
   setTimeout(() => {
     const courseId = req.params['id'];
 
-    const courses: any = Object.values(COURSES);
+    const courses = Object.values(COURSES);
 
     const course = courses.find((course) => course.id == courseId);
 

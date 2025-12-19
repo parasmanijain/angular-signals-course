@@ -3,7 +3,6 @@ import { CourseCategory } from '../models/course-category.model';
 
 @Component({
   selector: 'course-category-combobox',
-  imports: [],
   templateUrl: './course-category-combobox.component.html',
   styleUrl: './course-category-combobox.component.scss',
 })
