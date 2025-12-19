@@ -1,4 +1,4 @@
-import { Course, CourseCategory } from '../models';
+import { Course } from '../models';
 
 export interface Courses {
   [id: number]: Course;
