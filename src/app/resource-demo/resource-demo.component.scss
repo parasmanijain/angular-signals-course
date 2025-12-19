@@ -1,6 +1,6 @@
-@import "../../styles/button";
-@import "../../styles/forms";
-@import "../../styles/table";
+@use "../../styles/button" as *;
+@use "../../styles/forms" as *;
+@use "../../styles/table";
 
 @include buttonStyles();
 @include formStyles();
