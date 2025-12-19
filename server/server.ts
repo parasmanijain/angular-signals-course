@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
+import { AddressInfo } from 'node:net';
 import { getAllCourses, getCourseById } from './get-courses.route';
 import { searchLessons } from './search-lessons.route';
 import { saveCourse } from './save-course.route';
@@ -31,8 +32,6 @@ app.route('/api/lessons/:id').put(saveLesson);
 app.route('/api/login').post(loginUser);
 
 const httpServer = app.listen(9000, () => {
-  console.log(
-    'HTTP REST API Server running at http://localhost:' +
-      httpServer.address()['port'],
-  );
+  const { port } = httpServer.address() as AddressInfo;
+  console.log(`HTTP REST API Server running at http://localhost:${port}`);
 });
