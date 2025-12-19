@@ -1,4 +1,6 @@
-export const COURSES: any = {
+import { Courses } from './model';
+
+export const COURSES: Courses = {
   18: {
     id: 18,
     title: 'Modern Angular With Signals',
