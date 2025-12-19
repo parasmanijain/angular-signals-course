@@ -4,8 +4,8 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { inject } from '@angular/core';
-import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
+import { Course } from '../../../models';
 
 export const courseResolver: ResolveFn<Course | null> = async (
   route: ActivatedRouteSnapshot,

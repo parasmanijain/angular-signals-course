@@ -1,4 +1,4 @@
-import { Courses } from './model';
+import { Courses, Lessons } from './model';
 
 export const COURSES: Courses = {
   18: {
@@ -228,7 +228,7 @@ export const COURSES: Courses = {
   },
 };
 
-export const LESSONS: any = {
+export const LESSONS: Lessons = {
   1: {
     id: 1,
     description:

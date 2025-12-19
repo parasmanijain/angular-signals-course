@@ -12,7 +12,7 @@ import { CourseCategoryComboboxComponent } from '../course-category-combobox/cou
 import { EditCourseDialogData } from './edit-course-dialog.data.model';
 import { CoursesService } from '../services/courses.service';
 import { CourseCategory } from '../models/course-category.model';
-import { Course } from '../models/course.model';
+import { Course } from '../../../models';
 
 @Component({
   selector: 'edit-course-dialog',
@@ -62,7 +62,7 @@ export class EditCourseDialogComponent {
     const courseProps = this.form.value as Partial<Course>;
     courseProps.category = this.category();
     if (this.data?.mode === 'update') {
-      await this.saveCourse(this.data?.course!.id, courseProps);
+      await this.saveCourse(this.data?.course!.id.toString(), courseProps);
     } else if (this.data?.mode === 'create') {
       await this.createCourse(courseProps);
     }

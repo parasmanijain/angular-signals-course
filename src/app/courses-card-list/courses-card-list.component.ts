@@ -2,7 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
-import { Course } from '../models/course.model';
+import { Course } from '../../../models';
 
 @Component({
   selector: 'courses-card-list',
@@ -33,6 +33,6 @@ export class CoursesCardListComponent {
   }
 
   onCourseDeleted(course: Course) {
-    this.courseDeleted.emit(course.id);
+    this.courseDeleted.emit(course.id.toString());
   }
 }

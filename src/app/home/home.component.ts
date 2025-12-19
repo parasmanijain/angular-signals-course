@@ -14,8 +14,9 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 import { CoursesService } from '../services/courses.service';
-import { Course, sortCoursesBySeqNo } from '../models/course.model';
+import { sortCoursesBySeqNo } from '../models/course.model';
 import { MessagesService } from '../messages/messages.service';
+import { Course } from '../../../models';
 
 @Component({
   selector: 'home',
@@ -81,7 +82,9 @@ export class HomeComponent {
     try {
       await this.coursesService.deleteCourse(courseId);
       const courses = this.#courses();
-      const newCourses = courses.filter((course) => course.id !== courseId);
+      const newCourses = courses.filter(
+        (course) => course.id !== Number(courseId),
+      );
       this.#courses.set(newCourses);
     } catch (err) {
       console.error(err);

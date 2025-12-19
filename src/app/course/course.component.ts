@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Course } from '../models/course.model';
 import { Lesson } from '../models/lesson.model';
+import { Course } from '../../../models';
 
 @Component({
   selector: 'course',

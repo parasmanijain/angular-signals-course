@@ -1,4 +1,4 @@
-import { Course } from './course.model';
+import { Course } from '../../../models';
 
 export type GetCoursesResponse = {
   courses: Course[];
