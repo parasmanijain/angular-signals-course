@@ -3,7 +3,7 @@ import { setTimeout } from 'timers';
 import { LESSONS } from './db-data';
 
 export function saveLesson(req: Request, res: Response) {
-  const id = req.params['id'],
+  const id = Number(req.params['id']),
     changes = req.body;
 
   console.log('Saving lesson changes', id, JSON.stringify(changes));
