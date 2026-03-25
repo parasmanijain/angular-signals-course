@@ -31,14 +31,27 @@ export class HomeComponent {
 
   dialog = inject(MatDialog);
 
+  // TypeScript 6.0: Enhanced computed signals with better type inference
   beginnerCourses = computed(() => {
     const courses = this.#courses();
-    return courses.filter((course) => course.category === 'BEGINNER');
+    return courses.filter(
+      (course): course is Course => course.category === 'BEGINNER',
+    );
   });
 
   advancedCourses = computed(() => {
     const courses = this.#courses();
-    return courses.filter((course) => course.category === 'ADVANCED');
+    return courses.filter(
+      (course): course is Course => course.category === 'ADVANCED',
+    );
+  });
+
+  // TypeScript 6.0: New intermediate courses with enhanced filtering
+  intermediateCourses = computed(() => {
+    const courses = this.#courses();
+    return courses.filter(
+      (course): course is Course => course.category === 'INTERMEDIATE',
+    );
   });
 
   messageService = inject(MessagesService);
@@ -93,14 +106,14 @@ export class HomeComponent {
   }
 
   async onAddCourse() {
-    const newCourse = await openEditCourseDialog(this.dialog, {
+    const newCourse = (await openEditCourseDialog(this.dialog, {
       mode: 'create',
       title: 'Create New Course',
-    });
+    })) as Course | undefined;
     if (!newCourse) {
       return;
     }
-    const newCourses = [...this.#courses(), newCourse];
+    const newCourses: Course[] = [...this.#courses(), newCourse];
     this.#courses.set(newCourses);
   }
 

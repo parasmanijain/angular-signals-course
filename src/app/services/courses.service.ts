@@ -13,12 +13,30 @@ export class CoursesService {
 
   env = environment;
 
+  // TypeScript 6.0: Enhanced async method with better error handling
   async loadAllCourses(): Promise<Course[]> {
-    const courses$ = this.http.get<GetCoursesResponse>(
-      `${this.env.apiRoot}/courses`,
-    );
-    const response = await firstValueFrom(courses$);
-    return response.courses;
+    try {
+      const courses$ = this.http.get<GetCoursesResponse>(
+        `${this.env.apiRoot}/courses`,
+      );
+      const response = await firstValueFrom(courses$);
+
+      // TypeScript 6.0: Enhanced type validation
+      if (!response?.courses || !Array.isArray(response.courses)) {
+        throw new Error('Invalid courses response format');
+      }
+
+      return response.courses.filter(
+        (course): course is Course =>
+          typeof course === 'object' &&
+          course !== null &&
+          'id' in course &&
+          'title' in course,
+      );
+    } catch (error) {
+      console.error('Failed to load courses:', error);
+      throw new Error('Unable to load courses. Please try again later.');
+    }
   }
 
   async getCourseById(courseId: string): Promise<Course> {

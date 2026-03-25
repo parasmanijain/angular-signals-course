@@ -25,16 +25,20 @@ import { Course } from '../../../models';
   styleUrl: './edit-course-dialog.component.scss',
 })
 export class EditCourseDialogComponent {
-  dialogRef = inject(MatDialogRef);
+  dialogRef = inject(MatDialogRef) as MatDialogRef<
+    EditCourseDialogComponent,
+    Course | undefined
+  >;
 
   data: EditCourseDialogData = inject(MAT_DIALOG_DATA);
 
   fb = inject(FormBuilder);
 
+  // TypeScript 6.0: Enhanced form with proper typing for exactOptionalPropertyTypes
   form = this.fb.group({
-    title: [''],
-    longDescription: [''],
-    iconUrl: [''],
+    title: [null as string | null],
+    longDescription: [null as string | null],
+    iconUrl: [null as string | null],
   });
 
   courseService = inject(CoursesService);
@@ -42,10 +46,11 @@ export class EditCourseDialogComponent {
   category = signal<CourseCategory>('BEGINNER');
 
   constructor() {
+    // TypeScript 6.0: Handle exactOptionalPropertyTypes with proper null/undefined handling
     this.form.patchValue({
-      title: this.data?.course?.title,
-      longDescription: this.data?.course?.longDescription,
-      iconUrl: this.data?.course?.iconUrl,
+      title: this.data?.course?.title ?? null,
+      longDescription: this.data?.course?.longDescription ?? null,
+      iconUrl: this.data?.course?.iconUrl ?? null,
     });
     this.category.set(this.data?.course?.category ?? 'BEGINNER');
     effect(() => {
@@ -72,9 +77,11 @@ export class EditCourseDialogComponent {
     try {
       const newCourse = await this.courseService.createCourse(course);
       this.dialogRef.close(newCourse);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
-      alert(`Error creating the course.`);
+      const errorMessage =
+        err instanceof Error ? err.message : 'Unknown error occurred';
+      alert(`Error creating the course: ${errorMessage}`);
     }
   }
 
@@ -85,9 +92,11 @@ export class EditCourseDialogComponent {
         changes,
       );
       this.dialogRef.close(updatedCourse);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
-      alert(`Failed to save the course.`);
+      const errorMessage =
+        err instanceof Error ? err.message : 'Unknown error occurred';
+      alert(`Failed to save the course: ${errorMessage}`);
     }
   }
 }

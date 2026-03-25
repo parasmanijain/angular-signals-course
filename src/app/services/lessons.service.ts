@@ -13,26 +13,46 @@ export class LessonsService {
 
   http = inject(HttpClient);
 
+  // TypeScript 6.0: Enhanced method with strict typing and better error handling
   async loadLessons(config: {
-    courseId?: string;
-    query?: string;
+    readonly courseId?: string;
+    readonly query?: string;
   }): Promise<Lesson[]> {
-    const { courseId, query } = config;
-    let params = new HttpParams();
-    if (courseId) {
-      params = params.set('courseId', courseId);
+    try {
+      const { courseId, query } = config;
+      let params = new HttpParams();
+
+      // TypeScript 6.0: Enhanced parameter validation
+      if (courseId && typeof courseId === 'string' && courseId.trim()) {
+        params = params.set('courseId', courseId.trim());
+      }
+      if (query && typeof query === 'string' && query.trim()) {
+        params = params.set('query', query.trim());
+      }
+
+      const lessons$ = this.http.get<GetLessonsResponse>(
+        `${this.env.apiRoot}/search-lessons`,
+        { params },
+      );
+
+      const response = await firstValueFrom(lessons$);
+
+      // TypeScript 6.0: Enhanced type validation with type predicates
+      if (!response?.lessons || !Array.isArray(response.lessons)) {
+        throw new Error('Invalid lessons response format');
+      }
+
+      return response.lessons.filter(
+        (lesson): lesson is Lesson =>
+          typeof lesson === 'object' &&
+          lesson !== null &&
+          'id' in lesson &&
+          'duration' in lesson,
+      );
+    } catch (error) {
+      console.error('Failed to load lessons:', error);
+      throw new Error('Unable to load lessons. Please try again later.');
     }
-    if (query) {
-      params = params.set('query', query);
-    }
-    const lessons$ = this.http.get<GetLessonsResponse>(
-      `${this.env.apiRoot}/search-lessons`,
-      {
-        params,
-      },
-    );
-    const response = await firstValueFrom(lessons$);
-    return response.lessons;
   }
 
   async saveLesson(
